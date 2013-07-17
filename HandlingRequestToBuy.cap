@@ -1,0 +1,31 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+import aos.jack.util.thread.Semaphore;
+import investor.MessageFinished;
+
+/**
+ * 
+ */
+public capability HandlingRequestToBuy extends Capability {
+    #sends event MessageFinished ev;
+    #handles external event MessageBuy;
+    #uses plan ProcessRequestPlan;
+    #imports data OrderBook sharesToSell();
+    #private data Semaphore mutex();
+
+    protected void autorun()
+      {
+         mutex.signal();
+      }
+
+}
+

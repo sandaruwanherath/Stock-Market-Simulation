@@ -1,0 +1,43 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+import aos.jack.util.thread.Semaphore;
+
+/**
+ * 
+ */
+public plan HandleSellRequest extends Plan {
+    #handles event MessageSell ev;
+    #posts event FindAndTellInvesters tev;
+    #posts event NewCompanyShares nsev;
+    #uses data Semaphore mutex2;
+    
+    static boolean relevant(MessageSell ev)
+    {
+        return true;
+    }
+    
+    context()
+    {
+        true;
+    }
+    
+    #reasoning method
+    body()
+    {
+        @subtask(nsev.addNewCompanyShare(ev.company,ev.price,ev.numberOfShares));
+        @subtask(tev.findAllInvestors(ev.company,ev.price,ev.numberOfShares,ev.from));
+        //System.out.println("hapoi");
+    }
+    
+
+}
+

@@ -1,0 +1,53 @@
+/*******************************************************************
+ * Created by the JDE: Mon Mar 26 06:41:55 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+import aos.jack.util.thread.Semaphore;
+import investor.Finished;
+
+/**
+the plan the market agent uses to handle a messagebuy event sent by an invester agent
+*/
+public plan ProcessRequest extends Plan {
+    logical int $price;
+    logical int $shares;
+    #handles event MessageBuy ev;
+    #sends event Finished fev;
+    #uses data Semaphore mutex;
+    #uses data OrderBook companyList;
+    
+    static boolean relevant(MessageBuy ev)
+    {
+        return true;
+    }
+    
+    context()
+    {
+        true;
+    }
+    
+    #reasoning method
+    body()
+    {
+        companyList.getDetails(ev.company,$price,$shares);
+        @send(ev.from,fev.finished("sold! ",$price.getValue()*ev.amountOfShares));
+        companyList.remove(ev.company,$price.getValue(),$shares.getValue());
+        System.out.println("freacking handled !");
+    }
+    
+    #reasoning method
+    fail()
+    {
+        @send(ev.from,fev.finished("sorry! can't sell ",0));
+    }
+    
+
+}
+

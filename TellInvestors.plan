@@ -1,0 +1,51 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+import investor.MessageNewSharesAvailable;
+
+/**
+ * 
+ */
+public plan TellInvestors extends Plan {
+    logical String $name;
+    #handles event FindAndTellInvesters ev;
+    #sends event MessageNewSharesAvailable nsaev;
+    #uses data investors investors;
+    
+    static boolean relevant(FindAndTellInvesters ev)
+    {
+        return true;
+    }
+    
+    context()
+    {
+        investors.getNames($name);
+    }
+    
+    #reasoning method
+    body()
+    {
+        if(ev.buyer==null)
+        {
+        System.out.println("sending messages to "+$name.getValue());
+        MessageNewSharesAvailable indication = nsaev.generateNewSharesAvailableMessage(ev.company,ev.price,ev.numberOfShares,ev.seller);
+        @send($name.getValue(),indication);
+        System.out.println("ela ela");
+        }
+        else
+        {
+        
+        }
+    }
+    
+
+}
+

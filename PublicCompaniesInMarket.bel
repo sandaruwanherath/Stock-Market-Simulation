@@ -1,0 +1,26 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+
+/**
+ * 
+ */
+public beliefset PublicCompaniesInMarket extends OpenWorld {
+    #key field String companyName;
+    #value field int numShares;
+    #value field float sharePrice;
+    #value field float percentageOfTotCompany;
+    #value field float netIncome;
+    #indexed query getCompanyAttributes(String companyName, logical int numShares, logical float sharePrice, logical float percentageOfTotCompany, logical float netIncome);
+
+
+}
+

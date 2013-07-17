@@ -1,0 +1,34 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+
+/**
+ * 
+ */
+public event FindAndTellInvesters extends InferenceGoalEvent {
+    public String company;
+    public int price;
+    public int numberOfShares;
+    public String seller;
+    public String buyer;
+
+    #posted as
+    findAllInvestors(String company,int price, int shares,String seller){
+        this.company = company;
+        this.price = price;
+        this.numberOfShares = shares;
+        this.seller = seller;
+        this.buyer = null;
+    }
+
+
+}
+

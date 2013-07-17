@@ -1,0 +1,24 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+
+/**
+this contains companies and the number of shares available to sell.
+*/
+public beliefset OrderBook extends OpenWorld {
+    #value field String companyName;
+    #value field int numberOfShares;
+    #value field int sharePrice;
+    #indexed query getDetails(String companyName, logical int numberOfShares, logical int sharePrice);
+
+
+}
+

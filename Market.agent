@@ -1,0 +1,109 @@
+/*******************************************************************
+ * Created by the JDE: Mon Apr 02 19:06:01 IST 2012
+ * WARNING: If you are editing this file from outside the JDE, you
+ * should make sure to load the changes back into the JDE by setting
+ * the preference "Check for outside changes..." in the "Text Editor"
+ * preference tab or reload the component manually.
+ * Otherwise you will lose your changes next time the file is generated.
+ *******************************************************************/
+
+package stockMarket;
+
+import investor.MessageNewSharesAvailable;
+import investor.PublicCompanyAttributesChange;
+import java.io.*;
+import java.util.*;
+
+/**
+ * 
+ */
+public agent Market extends Agent {
+    #has capability HandlingRequestToBuy cap;
+    #has capability HandlingRequestToSell cap1;
+    #handles event NewCompanyShares;
+    #posts event NewCompanyShares ev;
+    #handles event FindAndTellInvesters;
+    #posts event FindAndTellInvesters ev1;
+    #sends event MessageNewSharesAvailable ev3;
+    #sends event PublicCompanyAttributesChange ev4;
+    #posts event NewInvestor ev6;
+    #handles event NewInvestor;
+    #uses plan AddNewCompanyShares;
+    #uses plan TellInvestors;
+    #uses plan AddInvestors;
+    #private data OrderBook sharesToSell();
+    #private data investors investors();
+    #private data PublicCompaniesInMarket publicCompaniesInMarket();
+
+    public Market(String name,String filename)
+    {
+        super(name);
+        
+        //////////////////////read file to initialize///////////////////////
+        StringTokenizer tokens;
+        String record;
+        String t1, t2, t3, t4;
+        int count=0;
+               
+        BufferedReader datafile = null;
+    
+        try {
+            datafile = new BufferedReader(new FileReader(filename));
+        } catch (FileNotFoundException e) {
+            System.err.println("unable to open file " + e.toString());
+            System.exit(1);
+        }
+    
+        try {
+            while ((record = datafile.readLine()) != null) {
+                tokens = new StringTokenizer(record);
+                t1 = tokens.nextToken();
+                t2 = tokens.nextToken();
+                t3 = tokens.nextToken();
+                t4 = tokens.nextToken();
+    
+                numShares = Integer.parseInt(t2);
+                sharePrice = Float.parseFloat(t3);
+                percentageOfTotCompany = Float.parseFloat(t4);
+                netIncome = getNetIncome();
+                count++;
+                System.out.println(count+" to database "+t1+numShares+sharePrice+percentageOfTotCompany+netIncome);
+                publicCompaniesInMarket.add(t1,numShares,sharePrice,percentageOfTotCompany,netIncome);
+            }
+        } catch (Exception e) {
+            System.err.println("error reading bom data into beliefset");
+            System.exit(1);
+        }
+        ///////////////////////////////end////////////////////////////////////////
+    }
+
+    int numShares;
+    float sharePrice;
+    float percentageOfTotCompany;
+    float netIncome;
+
+    /////////////file read support////////////////////////////////////////
+    
+    
+    private float getNetIncome() {
+        Random r = new Random();
+        float nextFloat = r.nextFloat();
+        if (nextFloat > 0.2) {
+            return nextFloat * numShares * sharePrice / (percentageOfTotCompany * 10);
+        } else {
+            return nextFloat * numShares * sharePrice / percentageOfTotCompany;
+        }
+    }
+
+    /////////////////////////////////end/////////////////////////////////////
+    
+    public void addNewCompanyShares(String name, int price, int shares){
+        postEventAndWait(ev.addNewCompanyShare(name,price,shares));
+    }
+
+    public void addInvestor(String name){
+        postEventAndWait(ev6.addNewInvestor(name));
+    }
+
+}
+
